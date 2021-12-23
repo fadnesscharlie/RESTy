@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './app.scss';
 
 import Header from './components/header/header.js';
@@ -7,41 +7,43 @@ import Results from './components/results/results.js';
 import Form from './components/form/form.js';
 import Footer from './components/footer/footer.js';
 
-class App extends React.Component {
+function App() {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: null,
-      requestParams: {},
-    };
-  }
+  const [ data, setData ] = useState(null)
+  const [ requestParams, setRequestParams ] = useState({})
 
-  callApi = (requestParams) => {
+  const callApi = async (requestParams) => {
     // mock output
-    const data = {
-      count: 2,
-      results: [
-        {name: 'fake thing 1', url: 'http://fakethings.com/1'},
-        {name: 'fake thing 2', url: 'http://fakethings.com/2'},
-      ],
-    };
-    this.setState({data, requestParams});
+    // await setTimeout(() => {
+      console.log('requestParams:', requestParams);
+      const data = {
+        count: 2,
+        results: [
+          {name: 
+            requestParams.name ? requestParams.name : 
+            'name' , url: requestParams.url},
+          {name: 
+            requestParams.name ? requestParams.name : 
+            'name', url: requestParams.url},
+        ],
+      };
+      setData(data);
+    // }, 1000)
+    setRequestParams(requestParams);
   }
 
-  render() {
-    return (
-      <>
-        <Header />
-        <Form handleApiCall={this.callApi} />
-        <Results data={this.state.data} />
-        <div>Request Method: {this.state.requestParams.method}</div>
-        <div>URL: {this.state.requestParams.url}</div>
-        <History />
-        <Footer />
-      </>
-    )
-  }
+  return (
+    <>
+      <Header />
+      <Form handleApiCall={callApi} />
+      <Results data={data} />
+      <div data-testid="name">API Name: {requestParams.name}</div>
+      <div>Request Method: {requestParams.method}</div>
+      <div data-testid="url" >URL: {requestParams.url}</div>
+      <History />
+      <Footer />
+    </>
+  )
 }
 
 export default App;
