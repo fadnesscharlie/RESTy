@@ -13,7 +13,7 @@ The method of which the user has chosen will be saved in a history box so they c
 
 ## Testing
 
-Coming Later...
+Run `npm test` to see our test coverage
 
 ## Contributors
 
@@ -24,4 +24,5 @@ Coming Later...
 - Heather Bisgaard
 - [Difference between sass and node-sass resource 1](https://www.peterbe.com/plog/quick-comparison-between-sass-and-node-sass)
 - [Difference between sass and node-sass resource 2](https://stackshare.io/stackups/node-sass-vs-sass)
+- [Testing Queries](https://testing-library.com/docs/queries/about)
 
