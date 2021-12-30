@@ -5,6 +5,11 @@ $radius: 40%;
   color: orange;
 }
 
+.items {
+  height: 800px;
+  overflow: auto;
+}
+
 form {
   background-color: grey;
   display: inline-block;

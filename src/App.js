@@ -15,16 +15,12 @@ function App() {
   const callApi = async (requestParams) => {
     // mock output
     // await setTimeout(() => {
-      console.log('requestParams:', requestParams);
+      // console.log('requestParams:', requestParams);
       const data = {
         count: 2,
         results: [
-          {name: 
-            requestParams.name ? requestParams.name : 
-            'name' , url: requestParams.url},
-          {name: 
-            requestParams.name ? requestParams.name : 
-            'name', url: requestParams.url},
+          {name: requestParams.name ? requestParams.name : 'name' , url: requestParams.url},
+          // {name: requestParams.name ? requestParams.name : 'name', url: requestParams.url},
         ],
       };
       setData(data);
