@@ -19,12 +19,8 @@ function App() {
       const data = {
         count: 2,
         results: [
-          {name: 
-            requestParams.name ? requestParams.name : 
-            'name' , url: requestParams.url},
-          {name: 
-            requestParams.name ? requestParams.name : 
-            'name', url: requestParams.url},
+          {name: requestParams.name ? requestParams.name : 'name' , url: requestParams.url},
+          // {name: requestParams.name ? requestParams.name : 'name', url: requestParams.url},
         ],
       };
       setData(data);

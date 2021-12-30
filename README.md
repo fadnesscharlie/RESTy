@@ -25,4 +25,5 @@ Run `npm test` to see our test coverage
 - [Difference between sass and node-sass resource 1](https://www.peterbe.com/plog/quick-comparison-between-sass-and-node-sass)
 - [Difference between sass and node-sass resource 2](https://stackshare.io/stackups/node-sass-vs-sass)
 - [Testing Queries](https://testing-library.com/docs/queries/about)
+- [Web Dev Simplified on UseEffect](https://www.youtube.com/watch?v=0ZJgIjIuY7U&ab_channel=WebDevSimplified)
 
