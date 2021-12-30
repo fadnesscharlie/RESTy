@@ -15,7 +15,7 @@ function App() {
   const callApi = async (requestParams) => {
     // mock output
     // await setTimeout(() => {
-      console.log('requestParams:', requestParams);
+      // console.log('requestParams:', requestParams);
       const data = {
         count: 2,
         results: [

@@ -34,44 +34,43 @@ function Form(props) {
 					url: url ? url : `https://jsonplaceholder.typicode.com/posts`,
 				})
 					.then((response) => { 
-						console.log('response:', JSON.stringify(response.data, null, 2))
+						// console.log('response:', JSON.stringify(response.data, null, 2))
 						setItem(response.data)
-					} 
-						)
+					})
 					break;
-					case 'POST':
-						axios({
+			case 'POST':
+				axios({
 					method: 'post',
 					url: url ? url : `https://jsonplaceholder.typicode.com/posts`,
 					data: body
 				})
-				.then((response) => response.json())
-				.then((json) => console.log(json));
+				// .then((response) => response.json())
+				// .then((json) => console.log(json));
 				break;
-				case 'PUT/1':
-					axios({
-						method: 'post',
-						url: url ? url : `https://jsonplaceholder.typicode.com/posts`,
-						data: body
-					})
-					.then((response) => response.json())
-					.then((json) => console.log(json));
-					break;
-					case 'DELETE':
-						axios({
-							method: 'delete',
-							url: url ? url : `https://jsonplaceholder.typicode.com/posts`,
-							
-						})
-					.then((response) => response.json())
-					.then((json) => console.log(json));
-					break;
-					default:
-						console.log('Default');
-						break;
-					}
-				}, [url])
-				console.log('item',item)
+			case 'PUT/1':
+				axios({
+					method: 'post',
+					url: url ? url : `https://jsonplaceholder.typicode.com/posts`,
+					data: body
+				})
+				// .then((response) => response.json())
+				// .then((json) => console.log(json));
+				break;
+			case 'DELETE':
+				axios({
+					method: 'delete',
+					url: url ? url : `https://jsonplaceholder.typicode.com/posts`,
+					
+				})
+				// .then((response) => response.json())
+				// .then((json) => console.log(json));
+				break;
+			default:
+				console.log('Default');
+				break;
+			}
+			}, [url])
+			// console.log('item',item)
 
 	return (
 		<>
