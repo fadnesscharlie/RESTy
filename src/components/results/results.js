@@ -3,10 +3,17 @@ import './results.scss'
 function Results(props) {
   return (
     <>
-      <h1 className='results'>Results</h1>
-      <section className='results'>
-        <pre>{props.data ? JSON.stringify(props.data, undefined, 2) : null}</pre>
-      </section>
+      <div className='items'>
+				{props.state.item.length ? (
+					props.state.item.map((items, index) => {
+						return <pre key={index}><li>{items.title}</li></pre>;
+					})
+				) : props.state.restful === 'POST' ? (
+					<pre>{props.state.body}</pre>
+				) : (
+					'No Results to Show Yet!'
+				)}
+			</div>
     </>
   )
 }

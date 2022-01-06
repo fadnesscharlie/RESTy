@@ -1,20 +1,41 @@
 $backgroundColor: #efefef;
 $radius: 40%;
 
+.wrapper {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, 1fr);
+};
+
+.history {
+  grid-column: 1 / 2;
+};
+
+.result {
+  border: 4px;
+  height: 800px;
+  overflow: auto;
+  background-color: rgb(152, 152, 235);
+}
+
+
 .form {
   color: orange;
 }
 
 .items {
+  grid-column: 2/ 3 ;
   height: 800px;
   overflow: auto;
+  background-color: rgb(152, 152, 235);
 }
 
 form {
   background-color: grey;
   display: inline-block;
   margin: auto;
-  width: 200px;
+  width: 400px;
+  padding: 20px;
 
   label {
     display: flex;

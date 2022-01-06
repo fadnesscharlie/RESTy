@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './app.scss';
 
 import Header from './components/header/header.js';
-import History from './components/history/history.js';
+// import History from './components/history/history.js';
 import Results from './components/results/results.js';
 import Form from './components/form/form.js';
 import Footer from './components/footer/footer.js';
@@ -32,11 +32,11 @@ function App() {
     <>
       <Header />
       <Form handleApiCall={callApi} />
-      <Results data={data} />
+      {/* <Results data={data} /> */}
       <div data-testid="name">API Name: {requestParams.name}</div>
       <div>Request Method: {requestParams.method}</div>
       <div data-testid="url" >URL: {requestParams.url}</div>
-      <History />
+      {/* <History /> */}
       <Footer />
     </>
   )

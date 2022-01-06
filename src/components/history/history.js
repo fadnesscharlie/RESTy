@@ -3,7 +3,14 @@ import './history.scss'
 function History(props) {
   return (
     <>
-      <h1 className='history'>History</h1>
+      <section className='history'>
+				{props.state.historyURL.length
+					? props.state.historyURL.map((url, index) => {
+							return <pre key={index}><li> Url {url}</li></pre>;
+					  })
+            
+					: 'No URL\s Entered!'}
+			</section>
     </>
   )
 }
