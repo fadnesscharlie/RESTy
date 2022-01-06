@@ -1,76 +1,146 @@
 import './form.scss';
-import { useEffect, useState } from 'react';
+import { useRef, useEffect, useReducer } from 'react';
 import axios from 'axios';
+import History from '../history/history.js';
+import Results from '../results/results.js';
 
-function Form(props) {
-	const [restful, setRestful] = useState('');
-	const [url, setUrl] = useState('');
-	const [item, setItem] = useState('');
-	const [body, setBody] = useState('Fake Data');
+const initialState = {
+	restful: '',
+	url: '',
+	item: '',
+	body: 'Fake Data',
+	historyURL: [],
+};
+
+function apiReducer(state = initialState, action) {
+	// console.log('ACTION',action)
+	const { type, payload } = action;
+
+	switch (type) {
+		default:
+			return state;
+		case 'API/GET':
+			return {
+				...state,
+				restful: payload,
+			};
+		case 'API/PUT':
+			return {
+				...state,
+				restful: payload,
+			};
+		case 'API/POST':
+			return {
+				...state,
+				restful: payload,
+			};
+		case 'API/DELETE':
+			return {
+				...state,
+				restful: payload,
+			};
+		case 'API/URL':
+			return {
+				...state,
+				url: payload,
+			};
+		case 'API/ITEM':
+			return {
+				...state,
+				item: payload,
+			};
+		case 'API/BODY':
+			return {
+				...state,
+				body: [...state.body, payload],
+			};
+		case 'API/HISTORY':
+			return {
+				...state,
+				historyURL: [...state.historyURL, payload],
+			};
+	}
+}
+
+export default function APICaller(props) {
+	const [state, dispatch] = useReducer(apiReducer, initialState);
+
+	const isInitialMount = useRef(true);
 
 	let handleSubmit = (e) => {
-		e.preventDefault();
-		// console.log('e.target:', e);
+		try {
+			e.preventDefault();
+			// console.log('e.target:', e);
 
-		setUrl(e.target[1].value);
-		setBody(e.target[2].value)
+			dispatch({ type: 'API/URL', payload: e.target[1].value });
+			// dispatch({type: 'API/BODY', payload: e.target[2].value});
 
-		const formData = {
-			name: e.target[0].value,
-			method: restful,
-			url: e.target[1].value
-				? e.target[1].value
-				: 'No API Added',
-			body: e.target[2].value
-		};
-		props.handleApiCall(formData);
+			dispatch({ type: 'API/HISTORY', payload: e.target[1].value });
+
+			console.log(state.historyURL)
+
+			const formData = {
+				name: e.target[0].value,
+				method: state.restful,
+				url: e.target[1].value ? e.target[1].value : 'No API Added',
+				body: e.target[2].value,
+			};
+			props.handleApiCall(formData);
+		} catch (e) {
+			console.log(e);
+		}
 	};
 
 	useEffect(() => {
-		switch(restful) {
+		if (isInitialMount.current) {
+			isInitialMount.current = false;
+		}
+		switch (state.restful) {
 			case 'GET':
+				console.log('hello from GET in useEffect');
 				axios({
 					method: 'get',
-					url: url ? url : `https://jsonplaceholder.typicode.com/posts`,
-				})
-					.then((response) => { 
-						// console.log('response:', JSON.stringify(response.data, null, 2))
-						setItem(response.data)
-					})
-					break;
+					url: state.url
+						? state.url
+						: `https://pokeapi.co/api/v2/pokemon/ditto`,
+				}).then((response) => {
+					// console.log('response:', JSON.stringify(response.data, null, 2))
+					dispatch({ type: 'API/ITEM', payload: response.data });
+				});
+
+				break;
 			case 'POST':
 				axios({
 					method: 'post',
-					url: url ? url : `https://jsonplaceholder.typicode.com/posts`,
-					data: body
-				})
-				// .then((response) => response.json())
-				// .then((json) => console.log(json));
+					url: state.url
+						? state.url
+						: `https://jsonplaceholder.typicode.com/posts`,
+					data: state.body,
+				});
 				break;
-			case 'PUT/1':
+			case 'PUT':
 				axios({
 					method: 'post',
-					url: url ? url : `https://jsonplaceholder.typicode.com/posts`,
-					data: body
-				})
-				// .then((response) => response.json())
-				// .then((json) => console.log(json));
+					url: state.url
+						? state.url
+						: `https://jsonplaceholder.typicode.com/posts/1`,
+					data: state.body,
+				});
 				break;
 			case 'DELETE':
 				axios({
 					method: 'delete',
-					url: url ? url : `https://jsonplaceholder.typicode.com/posts`,
-					
-				})
-				// .then((response) => response.json())
-				// .then((json) => console.log(json));
+					url: state.url
+						? state.url
+						: `https://jsonplaceholder.typicode.com/posts/1`,
+				});
 				break;
 			default:
-				console.log('Default');
+				console.log(state);
 				break;
-			}
-			}, [url])
-			// console.log('item',item)
+		}
+	}, [state.url]);
+	// console.log('item',item)
 
 	return (
 		<>
@@ -85,47 +155,56 @@ function Form(props) {
 					<span>URL: </span>
 					<input data-testid='url-input' name='url' type='text' />
 				</label>
-					{/* Only add body if Post or Put is Selected */}
-					{restful === 'POST' || restful === 'PUT/1' ? (
-						<label>
-							<span>Body info</span>
-							<input name='body' type='text' />
-						</label>
-					) : (
-						''
-						)}
+				{/* Only add body if Post or Put is Selected */}
+				{state.restful === 'POST' || state.restful === 'PUT' ? (
+					<label>
+						<span>Body info</span>
+						<input name='body' type='text' />
+					</label>
+				) : (
+					''
+				)}
 				<label className='methods'>
-					<button onClick={() => setRestful('GET')} className='get'>
+					<button
+						onClick={() => dispatch({ type: 'API/GET', payload: 'GET' })}
+						className='get'
+					>
 						GET
 					</button>
-					<button onClick={() => setRestful('POST')} className='post'>
+					<button
+						onClick={() => dispatch({ type: 'API/POST', payload: 'POST' })}
+						className='post'
+					>
 						POST
 					</button>
-					<button onClick={() => setRestful('PUT/1')} className='put'>
+					<button
+						onClick={() => dispatch({ type: 'API/PUT', payload: 'PUT' })}
+						className='put'
+					>
 						PUT
 					</button>
-					<button onClick={() => setRestful('DELETE')} className='delete'>
+					<button
+						onClick={() => dispatch({ type: 'API/DELETE', payload: 'DELETE' })}
+						className='delete'
+					>
 						DELETE
 					</button>
-						<button type='submit'>GO!</button>
+					<button type='submit'>GO!</button>
 				</label>
 			</form>
 
-			{ restful==='POST' ? <pre>RESTFUL WORKS {body}</pre> : ''}
-
+			{state.restful === 'POST' ? <pre>RESTFUL WORKS {state.body}</pre> : ''}
 
 			{/* Does not run correctly because I am having trouble having it wait for Data. Currently it is trying to find item.Data, and its not there when loading in */}
-			<div className='items'>
-				{ item
-				? item.map((items, index) => {
-					return <pre key={index}>{JSON.stringify(items.title)}</pre>;
-				}) 
-				: restful==='POST' 
-				? <pre>{body}</pre> 
-				: ''}
+
+
+			<div className="wrapper">
+			<History className='history' state={state} />
+			<Results className='result' state={state} />
 			</div>
+
 		</>
 	);
 }
 
-export default Form;
+// export default Form;
